@@ -11,30 +11,30 @@ interface Article {
   excerpt: string
 }
 
-export default defineSource(async ({ paginate }) => {
+export default defineSource(async () => {
   const baseUrl = "https://www.sinchew.com.my/ajx-api/category_posts/?cat=447&nooffset=true&editorialcat=0&posts_per_pages=10"
-
-  return paginate(
-    // 获取3页数据
-    Array.from({ length: 3 }, (_, i) => ({
-      url: `${baseUrl}&page=${i + 1}`,
-    })),
-    async ({ url }) => {
-      const articles: Article[] = await myFetch(url)
-      return articles.map((article) => ({
-        id: article.ID.toString(),
-        title: article.title,
-        extra: {
-          image: article.image && {
-            url: proxyPicture(article.image),
-            scale: 1.5,
-          },
-          category: article.cat,
-          time: article.time_display,
-        },
-        url: article.permalink,
-        mobileUrl: article.permalink,
-      }))
-    }
+  
+  // 获取前三页数据
+  const pages = await Promise.all(
+    [1, 2, 3].map(page => 
+      myFetch<Article[]>(`${baseUrl}&page=${page}`)
   )
+  
+  // 合并所有文章
+  const allArticles = pages.flat()
+  
+  return allArticles.map((article) => ({
+    id: article.ID.toString(),
+    title: article.title,
+    extra: {
+      image: article.image && {
+        url: proxyPicture(article.image),
+        scale: 1.5,
+      },
+      category: article.cat,
+      time: article.time_display,
+    },
+    url: article.permalink,
+    mobileUrl: article.permalink,
+  }))
 })
