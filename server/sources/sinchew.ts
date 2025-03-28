@@ -12,32 +12,38 @@ interface SinChewPost {
 }
 
 export default defineSource(async () => {
-  // 获取3页数据
-  const pages = [1, 2, 3]
   const allPosts: SinChewPost[] = []
   
-  // 并发请求所有页面
-  await Promise.all(pages.map(async (page) => {
+  // 使用 for 循环获取 3 页数据
+  for (let page = 1; page <= 3; page++) {
     const url = `https://www.sinchew.com.my/ajx-api/category_posts/?cat=447&page=${page}&nooffset=true&editorialcat=0&posts_per_pages=10`
     const response = await myFetch(url)
-    const posts: SinChewPost[] = await response.json()
+    
+    // 解析 JSON 数据
+    let posts: SinChewPost[]
+    if (typeof response === 'string') {
+      posts = JSON.parse(response)
+    } else if (response && typeof response.json === 'function') {
+      posts = await response.json()
+    } else {
+      posts = response // 如果已经是解析好的数据
+    }
+    
     allPosts.push(...posts)
-  }))
+  }
 
   // 转换数据格式
-  return allPosts.map((post) => {
-    return {
-      id: post.ID.toString(),
-      title: post.title,
-      url: post.permalink,
-      extra: {
-        mobileUrl: post.permalink,
-        summary: post.excerpt.trim(),
-        time: post.time_display,
-        image: post.image && proxyPicture(post.image, "encodeBase64URL"),
-        category: post.cat,
-        categoryLink: post.catlink,
-      }
+  return allPosts.map((post) => ({
+    id: post.ID.toString(),
+    title: post.title,
+    url: post.permalink,
+    mobileUrl: post.permalink,
+    summary: post.excerpt.trim(),
+    time: post.time_display,
+    image: post.image && proxyPicture(post.image, "encodeBase64URL"),
+    extra: {
+      category: post.cat,
+      categoryLink: post.catlink,
     }
-  })
+  }))
 })
