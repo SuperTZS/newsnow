@@ -1,5 +1,5 @@
-interface Article {
-  ID: number | string
+interface SinChewPost {
+  ID: number
   time_display: string
   cat: string
   catlink: string
@@ -12,28 +12,32 @@ interface Article {
 }
 
 export default defineSource(async () => {
-  const baseUrl = "https://www.sinchew.com.my/ajx-api/category_posts/?cat=447&nooffset=true&editorialcat=0&posts_per_pages=10"
+  // 获取3页数据
+  const pages = [1, 2, 3]
+  const allPosts: SinChewPost[] = []
   
-  // 获取前三页数据
-  const pagePromises = [1, 2, 3].map(page => 
-    myFetch<Article[]>(`${baseUrl}&page=${page}`)
-  )
-  
-  const pages = await Promise.all(pagePromises)
-  const allArticles = pages.flat()
-  
-  return allArticles.map(article => ({
-    id: String(article.ID),
-    title: article.title,
-    extra: {
-      image: article.image && {
-        url: proxyPicture(article.image),
-        scale: 1.5,
-      },
-      category: article.cat,
-      time: article.time_display,
-    },
-    url: article.permalink,
-    mobileUrl: article.permalink,
+  // 并发请求所有页面
+  await Promise.all(pages.map(async (page) => {
+    const url = `https://www.sinchew.com.my/ajx-api/category_posts/?cat=447&page=${page}&nooffset=true&editorialcat=0&posts_per_pages=10`
+    const response = await myFetch(url)
+    const posts: SinChewPost[] = await response.json()
+    allPosts.push(...posts)
   }))
+
+  // 转换数据格式
+  return allPosts.map((post) => {
+    return {
+      id: post.ID.toString(),
+      title: post.title,
+      url: post.permalink,
+      extra: {
+        mobileUrl: post.permalink,
+        summary: post.excerpt.trim(),
+        time: post.time_display,
+        image: post.image && proxyPicture(post.image, "encodeBase64URL"),
+        category: post.cat,
+        categoryLink: post.catlink,
+      }
+    }
+  })
 })
