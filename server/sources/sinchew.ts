@@ -15,15 +15,14 @@ export default defineSource(async () => {
   const baseUrl = "https://www.sinchew.com.my/ajx-api/category_posts/?cat=447&nooffset=true&editorialcat=0&posts_per_pages=10"
   
   // 获取前三页数据
-  const pages = await Promise.all(
-    [1, 2, 3].map(page => 
-      myFetch<Article[]>(`${baseUrl}&page=${page}`)
+  const pagePromises = [1, 2, 3].map(page => 
+    myFetch<Article[]>(`${baseUrl}&page=${page}`)
   )
   
-  // 合并所有文章
+  const pages = await Promise.all(pagePromises)
   const allArticles = pages.flat()
   
-  return allArticles.map((article) => ({
+  return allArticles.map(article => ({
     id: article.ID.toString(),
     title: article.title,
     extra: {
