@@ -3,7 +3,8 @@ import type { NewsItem } from "@shared/types"
 
 export default defineSource(async () => {
   const baseURL = "https://www.sinchew.com.my"
-  const html: any = await myFetch(baseURL)
+  const newsListURL = `${baseURL}/category/全国/封面头条`
+  const html: any = await myFetch(newsListURL)
   const $ = cheerio.load(html)
   
   const news: NewsItem[] = []
