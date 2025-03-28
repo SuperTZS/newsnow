@@ -13,7 +13,7 @@ export default defineSource(async () => {
   
   // 抓取3页数据（每页10条）
   for (let page = 1; page <= 3; page++) {
-    const apiUrl = `${baseURL}/ajx-api/category_posts/?cat=447&page=${page}&nooffset=true&posts_per_pages=10`
+    const apiUrl = `${baseURL}/ajx-api/category_posts/?cat=447&page=${page}&nooffset=true&editorialcat=0&posts_per_pages=10`
     
     const response: { data: SinChewPost[] } = await myFetch(apiUrl, {
       headers: {
