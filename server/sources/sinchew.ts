@@ -1,5 +1,5 @@
 interface Article {
-  ID: number
+  ID: number | string
   time_display: string
   cat: string
   catlink: string
@@ -23,7 +23,7 @@ export default defineSource(async () => {
   const allArticles = pages.flat()
   
   return allArticles.map(article => ({
-    id: article.ID.toString(),
+    id: String(article.ID),
     title: article.title,
     extra: {
       image: article.image && {
