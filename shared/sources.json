@@ -311,5 +311,13 @@
     "home": "https://www.baidu.com",
     "color": "blue",
     "interval": 600000
+  },
+  "sinchew": {
+    "name": "星洲日报",
+    "type": "hottest",
+    "column": "china",
+    "home": "https://www.sinchew.com.my",
+    "color": "white",
+    "interval": 600000
   }
 }
