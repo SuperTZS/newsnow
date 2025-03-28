@@ -120,6 +120,13 @@ export const originSources = {
     color: "red",
     home: "https://www.toutiao.com",
   },
+  "sinchew": {
+    name: "星洲日报",
+    type: "hottest",
+    column: "china",
+    color: "white",
+    home: "https://www.sinchew.com.my/",
+  },
   "ithome": {
     name: "IT之家",
     color: "red",
