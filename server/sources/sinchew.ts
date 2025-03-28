@@ -1,10 +1,14 @@
 import type { NewsItem } from "@shared/types"
 
-interface SinChewPost {
-  post_title: string
-  post_name: string
-  post_date: string
-  image_url: string
+interface SinChewAPIResponse {
+  data: {
+    ID: number
+    title: string          // 实际字段名（不是post_title）
+    permalink: string      // 完整新闻链接（无需拼接）
+    image: string          // 实际图片字段（不是image_url）
+    time_display: string   // 相对时间如"6天前"（备用）
+    cat?: string           // 分类名称（可选）
+  }[]
 }
 
 export default defineSource(async () => {
@@ -15,7 +19,7 @@ export default defineSource(async () => {
   for (let page = 1; page <= 3; page++) {
     const apiUrl = `${baseURL}/ajx-api/category_posts/?cat=447&page=${page}&nooffset=true&editorialcat=0&posts_per_pages=10`
     
-    const response: { data: SinChewPost[] } = await myFetch(apiUrl, {
+    const response: SinChewAPIResponse = await myFetch(apiUrl, {
       headers: {
         "X-Requested-With": "XMLHttpRequest",
         "Referer": `${baseURL}/category/全国/封面头条`
@@ -24,11 +28,12 @@ export default defineSource(async () => {
 
     response.data.forEach(item => {
       news.push({
-        title: item.post_title,
-        url: `${baseURL}/news/${item.post_date.split(' ')[0].replace(/-/g, '')}/${item.post_name}`,
+        title: item.title,  // 使用实际title字段
+        url: item.permalink, // 直接使用API提供的完整URL
         extra: {
-          time: item.post_date,
-          image: item.image_url ? proxyPicture(item.image_url) : undefined
+          time: item.time_display, // 精确时间戳
+          // 使用相对时间（如需）：time: item.time_display
+          image: item.image ? proxyPicture(item.image) : undefined // 使用实际image字段
         }
       })
     })
