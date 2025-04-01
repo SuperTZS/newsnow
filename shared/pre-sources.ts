@@ -122,10 +122,21 @@ export const originSources = {
   },
   "sinchew": {
     name: "星洲日报",
-    type: "hottest",
-    column: "china",
+    column: "malaysia",
     color: "white",
     home: "https://www.sinchew.com.my/",
+    sub: {
+      hot: {
+        type: "hottest",
+        interval: Time.Common,
+        title: "最热头条",
+      },
+      realtime: {
+        title: "实时新闻",
+        type: "realtime",
+        interval: Time.Fast,
+      },
+    },
   },
   "ithome": {
     name: "IT之家",
