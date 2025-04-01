@@ -316,7 +316,7 @@
     "redirect": "sinchew-hot"
     "name": "星洲日报",
     "type": "hottest",
-    "column": "china",
+    "column": "malaysia",
     "home": "https://www.sinchew.com.my",
     "color": "white",
     "interval": 600000,
@@ -325,7 +325,7 @@
   "sinchew-hot": {
     "name": "星洲日报",
     "type": "hottest",
-    "column": "china",
+    "column": "malaysia",
     "home": "https://www.sinchew.com.my",
     "color": "white",
     "interval": 1800000,
@@ -333,8 +333,8 @@
   },
   "sinchew-realtime": {
     "name": "星洲日报",
-    "type": "hottest",
-    "column": "china",
+    "type": "realtime",
+    "column": "malaysia",
     "home": "https://www.sinchew.com.my",
     "color": "white",
     "interval": 300000,
