@@ -39,7 +39,7 @@ const latest_posts = defineSource(async () => {
     url: post.permalink,
     mobileUrl: post.permalink,
     summary: post.excerpt.trim(),
-    date: parseRelativeDate(post.time_display, "Asia/Kuala_Lumpur").valueOf(),
+    pubDate: parseRelativeDate(post.time_display, "Asia/Kuala_Lumpur").valueOf(),
     image: post.image && proxyPicture(post.image, "encodeBase64URL"),
     extra: {
       category: post.cat,
