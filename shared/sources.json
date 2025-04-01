@@ -313,11 +313,31 @@
     "interval": 600000
   },
   "sinchew": {
+    "redirect": "sinchew-hot"
     "name": "星洲日报",
     "type": "hottest",
     "column": "china",
     "home": "https://www.sinchew.com.my",
     "color": "white",
-    "interval": 600000
+    "interval": 600000,
+    "title": "热门头条"
+  },
+  "sinchew-hot": {
+    "name": "星洲日报",
+    "type": "hottest",
+    "column": "china",
+    "home": "https://www.sinchew.com.my",
+    "color": "white",
+    "interval": 1800000,
+    "title": "热门头条"
+  },
+  "sinchew-realtime": {
+    "name": "星洲日报",
+    "type": "hottest",
+    "column": "china",
+    "home": "https://www.sinchew.com.my",
+    "color": "white",
+    "interval": 300000,
+    "title": "实时"
   }
 }
