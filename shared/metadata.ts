@@ -42,7 +42,7 @@ export const metadata: Metadata = typeSafeObjectFromEntries(typeSafeObjectEntrie
     case "malaysia":
       return [k, {
         name: v.zh,
-        sources: typeSafeObjectEntries(sources).filter(([, v]) => v.type === "malaysia" && !v.redirect).map(([k]) => k),
+        sources: typeSafeObjectEntries(sources).filter(([, v]) => v.column === "malaysia" && !v.redirect).map(([k]) => k),
       }]
     case "hottest":
       return [k, {
