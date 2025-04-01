@@ -3,7 +3,7 @@ import { typeSafeObjectEntries, typeSafeObjectFromEntries } from "./type.util"
 import type { ColumnID, HiddenColumnID, Metadata, SourceID } from "./types"
 
 export const columns = {
-  china: {
+  malaysia: {
     zh: "国内",
   },
   world: {
