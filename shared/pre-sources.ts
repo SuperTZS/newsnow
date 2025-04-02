@@ -129,10 +129,10 @@ export const originSources = {
       hot: {
         type: "hottest",
         interval: Time.Common,
-        title: "最热头条",
+        title: "热门新闻",
       },
       realtime: {
-        title: "实时新闻",
+        title: "即时新闻",
         type: "realtime",
         interval: Time.Fast,
       },
