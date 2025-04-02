@@ -132,7 +132,7 @@ export const originSources = {
         title: "热门新闻",
       },
       realtime: {
-        title: "即时新闻",
+        title: "最新新闻",
         type: "realtime",
         interval: Time.Fast,
       },

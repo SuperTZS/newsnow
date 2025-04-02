@@ -1,4 +1,6 @@
-interface SinChewPost {
+import { myFetch } from "#/utils/fetch"
+
+interface latestPost {
   ID: number
   time_display: string
   cat: string
@@ -11,16 +13,25 @@ interface SinChewPost {
   excerpt: string
 }
 
-interface hotPost1 {
-  zero:SinChewPost[];
+interface hotPostItem {
+  ID: number
+  the_permalink: string
+  post_title: string
+  time: string
+  date_diff: string
+  image: string
 }
 
-interface hotPost2 {
-  result:SinChewPost[];
+interface hotPost1 {
+  zero:hotPostItem[];
+}
+
+interface hotPostOther {
+  result:hotPostItem[];
 }
 
 const latest_posts = defineSource(async () => {
-  const allPosts: SinChewPost[] = []
+  const allPosts: latestPost[] = []
   
   // 使用 for 循环获取 3 页数据
   for (let page = 1; page <= 3; page++) {
@@ -28,7 +39,7 @@ const latest_posts = defineSource(async () => {
     const response = await myFetch(url)
     
     // 解析 JSON 数据
-    let posts: SinChewPost[]
+    let posts: latestPost[]
     if (typeof response === 'string') {
       posts = JSON.parse(response)
     } else if (response && typeof response.json === 'function') {
@@ -60,43 +71,42 @@ const latest_posts = defineSource(async () => {
 
 const hot_posts = defineSource(async () => {
 
-  const allPosts:SinChewPost[] = []
+  const allPosts:hotPostItem[] = []
 
   // 使用 for 循环获取 3 页数据
   for (let page = 1; page <= 3; page++) {
     let url = ``
-    let posts:SinChewPost[] =[]
     if (page==1) {
 
       url = 'https://www.sinchew.com.my/hot-post-list/?taxid=-1'
-      const response:hotPost1 = JSON.parse(await myFetch(url))
-      
-      posts = response.zero
+      const response = await myFetch(url)
+
+      let posts: hotPost1 =
+        typeof response === "string"
+        ? JSON.parse(response)
+        : response
+
+      allPosts.push(...posts.zero)
     }
     else {
       url = `https://www.sinchew.com.my/hot-post-list/?taxid=-1&page=${page}&range=6H`
-      const response:hotPost2 = JSON.parse(await myFetch(url))
+      const response = await myFetch(url)
       
-      posts = response.result
+      let posts: hotPostOther = typeof response === 'string'
+        ? JSON.parse(response)
+        : response
+      
+      allPosts.push(...posts.result)
     }
-
-
-    allPosts.push(...posts)
   }
 
   // 转换数据格式
   return allPosts.map((post) => ({
     id: post.ID.toString(),
-    title: post.title,
-    url: post.permalink,
-    mobileUrl: post.permalink,
-    summary: post.excerpt.trim(),
-    time: post.time_display,
-    image: post.image && proxyPicture(post.image, "encodeBase64URL"),
-    extra: {
-      category: post.cat,
-      categoryLink: post.catlink,
-    }
+    title: post.post_title,
+    url: post.the_permalink,
+    time: post.time,
+    image: post.image && proxyPicture(post.image, "encodeBase64URL")
   }))
 })
 
