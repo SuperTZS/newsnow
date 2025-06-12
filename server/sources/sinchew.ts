@@ -1,5 +1,7 @@
 import { myFetch } from "#/utils/fetch"
 
+console.log("=== Here is sinchew.ts ===")
+
 interface latestPost {
   ID: number
   time_display: string
@@ -81,7 +83,7 @@ const hot_posts = defineSource(async () => {
 
       url = 'https://www.sinchew.com.my/hot-post-list/?taxid=-1'
       const response = await myFetch(url)
-      console.log("Response code: ", response.status);
+      console.log("Response code: ", response.status)
       
       
       let posts: hotPost1 =
