@@ -28,7 +28,7 @@ export default defineEventHandler(async (event): Promise<SourceResponse> => {
         // interval 刷新间隔，对于缓存失效也要执行的。本质上表示本来内容更新就很慢，这个间隔内可能内容压根不会更新。
         // 默认 10 分钟，是低于 TTL 的，但部分 Source 的更新间隔会超过 TTL，甚至有的一天更新一次。
         if (now - cache.updated < sources[id].interval) {
-          logger.info("now - cache.updated < sources[id].interval")
+          logger.success("now - cache.updated < sources[id].interval")
           return {
             status: "success",
             id,
@@ -40,7 +40,7 @@ export default defineEventHandler(async (event): Promise<SourceResponse> => {
         // 而 TTL 缓存失效时间，在时间范围内，就算内容更新了也要用这个缓存。
         // 复用缓存是不会更新时间的。
         if (now - cache.updated < TTL) {
-          logger.info("now - cache.updated < TTL")
+          logger.success("now - cache.updated < TTL")
           // 有 latest
           // 没有 latest，但服务器禁止登录
 
