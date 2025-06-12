@@ -73,6 +73,7 @@ export default defineEventHandler(async (event): Promise<SourceResponse> => {
       }
     } catch (e) {
       if (cache!) {
+        logger.error(e)
         return {
           status: "cache",
           id,
