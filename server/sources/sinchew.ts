@@ -81,8 +81,6 @@ const hot_posts = defineSource(async () => {
 
       url = 'https://www.sinchew.com.my/hot-post-list/?taxid=-1'
       const response = await myFetch(url)
-      console.log("Response code: ", response.status);
-      
       
       let posts: hotPost1 =
         typeof response === "string"
