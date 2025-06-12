@@ -1,5 +1,7 @@
 import { myFetch } from "#/utils/fetch"
 
+console.log("=== Here is sinchew.ts ===")
+
 interface latestPost {
   ID: number
   time_display: string
