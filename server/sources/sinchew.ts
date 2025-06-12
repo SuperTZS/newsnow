@@ -38,6 +38,7 @@ const latest_posts = defineSource(async () => {
     const url = `https://www.sinchew.com.my/ajx-api/latest_posts/?page=${page}`
     const response = await myFetch(url)
     
+    
     // 解析 JSON 数据
     let posts: latestPost[]
     if (typeof response === 'string') {
@@ -80,7 +81,9 @@ const hot_posts = defineSource(async () => {
 
       url = 'https://www.sinchew.com.my/hot-post-list/?taxid=-1'
       const response = await myFetch(url)
-
+      console.log("Response code: ", response.status);
+      
+      
       let posts: hotPost1 =
         typeof response === "string"
         ? JSON.parse(response)
