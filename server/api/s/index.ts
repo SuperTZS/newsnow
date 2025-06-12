@@ -76,6 +76,7 @@ export default defineEventHandler(async (event): Promise<SourceResponse> => {
         logger.error(e)
         return {
           status: "cache",
+          e:e.toString(),
           id,
           updatedTime: cache.updated,
           items: cache.items,
